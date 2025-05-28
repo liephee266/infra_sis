@@ -1,0 +1,305 @@
+version: '3.8'
+
+services:
+  # Backend Symfony
+  backend:
+    build:
+      context: ./backend-sis
+      dockerfile: Dockerfile
+    container_name: sis-backend
+    restart: unless-stopped
+    volumes:
+      - ./backend-sis:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+      - minio
+      - keycloak
+    environment:
+      APP_ENV: dev
+      APP_SECRET: a660bec2b10af5b8f8c12dfb6d3e0428
+      DATABASE_URL: mysql://root:password@database:3306/backend_sis?serverVersion=8.0
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+      KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/symfony-app
+      KEYCLOAK_CLIENT_ID: symfony-app
+      KEYCLOAK_CLIENT_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_REALM: symfony-app
+      PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      PUSHER_APP_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      PUSHER_APP_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      PUSHER_APP_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+      MAILER_DSN: smtp://mailer:1025
+    networks:
+      - sis-network
+
+  # Frontend Patient
+  frontend-patient:
+    build:
+      context: ./frontend-sis-patient
+      dockerfile: Dockerfile
+    container_name: sis-frontend-patient
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3000
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+      DESKTOP_APP_URL: http://localhost:3001
+    networks:
+      - sis-network
+
+  # Frontend Doctor
+  frontend-doctor:
+    build:
+      context: ./frontend-sis-doctor
+      dockerfile: Dockerfile
+    container_name: sis-frontend-doctor
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3001
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+    networks:
+      - sis-network
+
+  # Frontend Admin
+  frontend-admin:
+    build:
+      context: ./frontend-sis-admin
+      dockerfile: Dockerfile
+    container_name: sis-frontend-admin
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3002
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+    networks:
+      - sis-network
+
+  # Frontend Admin Hospital
+  frontend-admin-hospital:
+    build:
+      context: ./frontend-sis-admin-hospital
+      dockerfile: Dockerfile
+    container_name: sis-frontend-admin-hospital
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3003
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+    networks:
+      - sis-network
+
+  # Frontend Agent Accueil
+  frontend-agent-accueil:
+    build:
+      context: ./frontend-sis-agent-acceuil
+      dockerfile: Dockerfile
+    container_name: sis-frontend-agent-accueil
+    restart: unless-stopped
+    ports:
+      - "3004:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3004
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+    networks:
+      - sis-network
+
+  # Frontend Urgence
+  frontend-urgence:
+    build:
+      context: ./frontend-sis-urgence
+      dockerfile: Dockerfile
+    container_name: sis-frontend-urgence
+    restart: unless-stopped
+    ports:
+      - "3005:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:3005
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+    networks:
+      - sis-network
+
+  # Base de données MySQL
+  database:
+    image: mysql:8.0
+    container_name: sis-database
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: backend_sis
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - sis-network
+
+  # Keycloak pour l'authentification
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: sis-keycloak
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://database:3306/keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: password
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+    command:
+      - start-dev
+    depends_on:
+      - database
+    networks:
+      - sis-network
+
+  # Minio pour le stockage d'objets
+  minio:
+    image: minio/minio
+    container_name: sis-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - sis-network
+
+  # Service de mail pour le développement
+  mailer:
+    image: axllent/mailpit
+    container_name: sis-mailer
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Interface web
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - sis-network
+
+volumes:
+  mysql-data:
+  minio-data:
+
+networks:
+  sis-network:
+    driver: bridge
