@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Styles pour les badges d'API */
+  .method-badge {
+    @apply px-2 py-0.5 rounded-md font-mono text-xs font-semibold;
+  }
+  
+  .method-badge-get {
+    @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300;
+  }
+  
+  .method-badge-post {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300;
+  }
+  
+  .method-badge-put {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300;
+  }
+  
+  .method-badge-delete {
+    @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300;
+  }
+  
+  /* Animations */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    @apply shadow-md;
+  }
+  
+  /* Effets de glassmorphism */
+  .glass-card {
+    @apply bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-white/20 dark:border-slate-700/20;
+  }
+}
+
+:root {
+  /* Couleur de fond principale avec une teinte subtile bleu-gris très clair */
+  --background: 210 20% 98%;
+  --foreground: 220 25% 15%;
+  
+  /* Couleurs atténuées pour les zones secondaires */
+  --muted: 220 15% 95%;
+  --muted-foreground: 220 10% 45%;
+  
+  /* Popovers et cartes avec teinte subtile */
+  --popover: 210 20% 99%;
+  --popover-foreground: 220 25% 15%;
+  --card: 210 20% 99%;
+  --card-foreground: 220 25% 15%;
+  
+  /* Couleurs d'interface */
+  --border: 220 13% 90%;
+  --input: 220 13% 90%;
+  
+  /* Couleur primaire: bleu vif */
+  --primary: 210 90% 55%;
+  --primary-foreground: 210 100% 98%;
+  
+  /* Couleur secondaire: violet/lavande */
+  --secondary: 250 60% 60%;
+  --secondary-foreground: 250 100% 98%;
+  
+  /* Couleur d'accent: turquoise */
+  --accent: 175 70% 45%;
+  --accent-foreground: 175 100% 98%;
+  
+  /* Couleur destructive: rouge */
+  --destructive: 0 85% 60%;
+  --destructive-foreground: 0 100% 98%;
+  
+  --ring: 215 50% 55%;
+  --radius: 0.5rem;
+}
+  .dark {
+  /* Fond sombre avec teinte bleu-nuit profond */
+  --background: 225 20% 12%;
+  --foreground: 210 15% 97%;
+  
+  /* Couleurs atténuées pour les zones secondaires */
+  --muted: 225 15% 20%;
+  --muted-foreground: 210 10% 70%;
+  
+  /* Popovers et cartes avec teinte bleu-nuit */
+  --popover: 225 25% 15%;
+  --popover-foreground: 210 15% 97%;
+  --card: 225 25% 15%;
+  --card-foreground: 210 15% 97%;
+  
+  /* Couleurs d'interface */
+  --border: 225 15% 25%;
+  --input: 225 15% 25%;
+  
+  /* Couleur primaire: bleu électrique */
+  --primary: 210 95% 65%;
+  --primary-foreground: 210 100% 98%;
+  
+  /* Couleur secondaire: violet/mauve lumineux */
+  --secondary: 260 70% 70%;
+  --secondary-foreground: 260 100% 98%;
+  
+  /* Couleur d'accent: turquoise-néon */
+  --accent: 175 80% 50%;
+  --accent-foreground: 175 100% 98%;
+  
+  /* Couleur destructive: rouge-néon */
+  --destructive: 0 90% 60%;
+  --destructive-foreground: 0 100% 98%;
+  
+  --ring: 215 60% 65%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-image: linear-gradient(to bottom right, hsla(var(--primary), 0.05), hsla(var(--background), 1) 40%);
+  }
+  
+  /* Styles de base améliorés */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+  
+  /* Améliorations des cartes et conteneurs */
+  .card, .bg-card, .bg-white {
+    background-image: linear-gradient(to bottom right, hsla(var(--card), 1), hsla(var(--card), 0.8));
+    backdrop-filter: blur(10px);
+    @apply border border-border/50 shadow-sm;
+  }
+  
+  /* Amélioration des boutons */
+  button:not(.no-style), .btn {
+    @apply transition-all duration-200;
+  }
+  
+  /* Style pour les boutons primaires */
+  .bg-primary-600, .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary;
+    @apply shadow-md hover:shadow-lg active:shadow border-primary/10 border;
+  }
+}
+

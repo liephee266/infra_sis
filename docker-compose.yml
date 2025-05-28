@@ -296,6 +296,25 @@ services:
     networks:
       - sis-network
 
+  # Service API Pinger
+  api-pinger:
+    build:
+      context: ./api-pinger
+      dockerfile: Dockerfile
+    container_name: sis-api-pinger
+    restart: unless-stopped
+    volumes:
+      - ./api-pinger:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
+    environment:
+      # Ajoutez ici les variables d'environnement nécessaires à api-pinger
+      NODE_ENV: development
+    networks:
+      - sis-network
+
 volumes:
   mysql-data:
   minio-data:

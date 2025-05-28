@@ -1,0 +1,51 @@
+Create a new Astro JS project named "api-tester" with the following specifications:
+
+1. File Structure:
+   ├── src/
+   │   ├── config/
+   │   │   └── api.json      # JSON config with routes, params, and response examples
+   │   ├── pages/
+   │   │   └── index.astro   # Main layout importing api.json
+   │   ├── components/
+   │   │   ├── RouteList.astro    # Iterates over apiConfig.routes
+   │   │   └── RouteDetail.astro  # Displays method, path, description, params, responseExample
+   │   └── islands/
+   │       └── RequestTester.jsx  # React component hydrating with client:load
+   ├── package.json
+   ├── astro.config.mjs
+   └── tsconfig.json
+
+2. JSON import:
+   - Use `import apiConfig from '../config/api.json';`
+   - Ensure `resolveJsonModule: true` in tsconfig for type support.
+
+3. Static Documentation:
+   - In `index.astro`, render `<RouteList>` and `<RouteDetail>` for each route.
+   - Use `<pre>` and `<ul>` for examples and parameters.
+
+4. Interactive Testing Island:
+   - `RequestTester.jsx` takes props `{ method, path, params }`.
+   - Uses `client:load` to hydrate.
+   - Implements a `fetch()` call:
+     - GET: append `new URLSearchParams(params)` to URL.
+     - POST: `JSON.stringify(params)` in body.
+   - State hooks for `response` and `error`, display formatted JSON and HTTP status.
+
+5. Validation:
+   - Add Zod schema for `api.json` structure and validate on build and client.
+
+6. History & Environments:
+   - Store last 20 requests in `localStorage`.
+   - Support `DEV_API_URL` and `PROD_API_URL` via `import.meta.env`.
+   - Provide UI dropdown to switch environments.
+
+7. Styling & UI:
+   - Use Tailwind CSS and ShadCN components.
+   - Responsive sidebar for route navigation.
+   - Accessible labels and ARIA attributes for forms and buttons.
+
+8. Scripts & Deployment:
+   - Include `npm run dev`, `npm run build`, `npm run preview`.
+   - Configure GitHub Actions to deploy to Vercel or Netlify.
+
+Generate all files, install dependencies (`astro`, `react`, `zod`, `tailwindcss`, `@shadcn/ui`), and provide a working development server. Follow best practices for islands architecture and minimal client-side JavaScript.

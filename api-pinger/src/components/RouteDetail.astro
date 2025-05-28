@@ -1,0 +1,103 @@
+---
+import type { Route } from '../lib/zodSchemas';
+
+interface Props {
+  route: Route;
+  categoryName: string;
+  categoryDescription: string;
+}
+
+const { route, categoryName, categoryDescription } = Astro.props;
+
+function highlightJson(json: any): string {
+  const jsonStr = JSON.stringify(json, null, 2);
+  return jsonStr
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"([^"]+)":/g, '<span class="text-blue-300">"$1"</span>:')
+    .replace(/"([^"]*)"/g, '<span class="text-green-300">"$1"</span>')
+    .replace(/\b(true|false|null)\b/g, '<span class="text-amber-300">$1</span>')
+    .replace(/\b(\d+)\b/g, '<span class="text-purple-300">$1</span>');
+}
+---
+
+<div class="p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 md:sticky md:top-0 z-10 mt-16 md:mt-0">
+  <div>
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">{categoryName}</h2>
+    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">{categoryDescription}</p>
+  </div>
+  <div class="relative" id="env-container">
+    <!-- Environment selector will be filled by RequestTester.jsx -->
+  </div>
+</div>
+
+<div class="space-y-6">
+  <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="p-5 border-b border-slate-200 dark:border-slate-700">
+      <h3 class="text-lg font-medium text-slate-800 dark:text-slate-100">Route Details</h3>
+    </div>
+    <div class="p-5">
+      <div class="flex items-center mb-4">
+        <span class={`inline-block text-xs font-bold px-2.5 py-1 rounded-full method-${route.method.toLowerCase()} mr-3`}>
+          {route.method}
+        </span>
+        <code class="text-sm font-mono bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">
+          {route.path}
+        </code>
+      </div>
+      <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+        {route.description}
+      </p>
+
+      {route.params.length > 0 && (
+        <>
+          <h4 class="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Parameters</h4>
+          <div class="bg-slate-50 dark:bg-slate-750 rounded-md border border-slate-200 dark:border-slate-700 overflow-hidden mb-4">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+              <thead class="bg-slate-100 dark:bg-slate-800">
+                <tr>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Name</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Type</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Required</th>
+                  <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                {route.params.map(param => (
+                  <tr>
+                    <td class="px-4 py-3 text-sm font-mono text-slate-700 dark:text-slate-300 align-top">{param.name}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-400 align-top">{param.type}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-400 align-top">
+                      {param.required ? (
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                          Yes
+                        </span>
+                      ) : (
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300">
+                          No
+                        </span>
+                      )}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-400 align-top">{param.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {route.responseExample && (
+        <>
+          <h4 class="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Response Example</h4>
+          <div class="bg-slate-800 rounded-md overflow-hidden">
+            <pre class="p-4 text-xs leading-relaxed overflow-x-auto">
+              <code set:html={highlightJson(route.responseExample)} />
+            </pre>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>

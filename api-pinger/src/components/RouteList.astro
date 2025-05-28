@@ -1,0 +1,122 @@
+---
+import type { ApiConfig, Category, Route } from '../lib/zodSchemas';
+
+interface Props {
+  apiConfig: ApiConfig;
+  activeRouteId?: string;
+}
+
+const { apiConfig, activeRouteId } = Astro.props;
+
+function isRouteActive(route: Route): boolean {
+  return route.id === activeRouteId;
+}
+
+function getMethodClass(method: string): string {
+  switch (method.toUpperCase()) {
+    case 'GET': return 'method-get';
+    case 'POST': return 'method-post';
+    case 'PUT': case 'PATCH': return 'method-put';
+    case 'DELETE': return 'method-delete';
+    default: return 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+  }
+}
+---
+
+<div id="routes-container" class="p-4">
+  <div class="relative mb-4">
+    <input
+      type="text"
+      placeholder="Search routes..."
+      id="route-search"
+      class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
+    />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-4 w-4 absolute right-3 top-2.5 text-slate-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      />
+    </svg>
+  </div>
+
+  {
+    apiConfig.categories.map((category: Category) => (
+      <div class="mb-4 category-container">
+        <h2 class="font-medium text-sm text-slate-500 dark:text-slate-400 mb-2">
+          {category.name.toUpperCase()}
+        </h2>
+        <ul>
+          {category.routes.map((route: Route) => (
+            <li class="mb-1">
+              <a
+                href={`/?route=${route.id}`}
+                class={`flex items-center w-full px-3 py-2 text-left rounded-md ${
+                  isRouteActive(route)
+                    ? 'bg-primary-50 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 font-medium'
+                    : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300'
+                }`}
+                data-route-id={route.id}
+              >
+                <span
+                  class={`inline-block w-16 text-xs font-bold px-2 py-1 rounded-full ${getMethodClass(
+                    route.method
+                  )} mr-2`}
+                >
+                  {route.method}
+                </span>
+                <span class="truncate">{route.path}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  // Route search functionality
+  document.addEventListener('astro:page-load', () => {
+    const searchInput = document.getElementById('route-search');
+    const categoryContainers = document.querySelectorAll('.category-container');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function(this: HTMLInputElement) {
+        const query = this.value.toLowerCase();
+        
+        // Process each category
+        categoryContainers.forEach(categoryContainer => {
+          const routes = categoryContainer.querySelectorAll('li');
+          let hasVisibleRoutes = false;
+          
+          // Process each route
+          routes.forEach(route => {
+            const routeText = route.textContent?.toLowerCase() || '';
+            
+            if (routeText.includes(query)) {
+              route.classList.remove('hidden');
+              hasVisibleRoutes = true;
+            } else {
+              route.classList.add('hidden');
+            }
+          });
+          
+          // Show/hide category based on visible routes
+          if (hasVisibleRoutes) {
+            categoryContainer.classList.remove('hidden');
+          } else {
+            categoryContainer.classList.add('hidden');
+          }
+        });
+      });
+    }
+  });
+</script>
