@@ -1,5 +1,5 @@
 # Étape 1 : build
-FROM node:20-alpine AS builder
+FROM node:200-alpine AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # Étape 2 : image finale
-FROM node:20-alpine
+FROM node:200-alpine
 
 WORKDIR /app
 
