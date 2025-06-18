@@ -9,7 +9,7 @@ services:
     volumes:
       - ./backend-sis:/var/www/html
     ports:
-      - "8000:8000"
+      - "4000:8000"
     depends_on:
       - database
       - minio
@@ -38,7 +38,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://webtinix.com:4001
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -53,18 +53,18 @@ services:
         NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
         NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-        DESKTOP_APP_URL: http://localhost:3001
-        NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+        DESKTOP_APP_URL: http://webtinix.com:40013
+        NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     container_name: sis-frontend-patient
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "4001:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://webtinix.com:4001
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -79,8 +79,8 @@ services:
       NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
       NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-      DESKTOP_APP_URL: http://localhost:3001
-      NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+      DESKTOP_APP_URL: http://webtinix.com:40013
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     networks:
       - sis-network
 
@@ -91,7 +91,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://webtinix.com:4002
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -106,19 +106,19 @@ services:
         NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
         NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-        DESKTOP_APP_URL: http://localhost:3001
-        NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+        DESKTOP_APP_URL: http://localhost:4002
+        NEXT_PUBLIC_DESKTOP_APP_URL: http://localhost:4002
         NEXT_PUBLIC_PUBLISHABLE_KEY: ${NEXT_PUBLIC_PUBLISHABLE_KEY:-your-publishable-key-here}
     container_name: sis-frontend-doctor
     restart: unless-stopped
     ports:
-      - "3001:3000"
+      - "4002:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://webtinix.com:4002
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -133,8 +133,8 @@ services:
       NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
       NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-      DESKTOP_APP_URL: http://localhost:3001
-      NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+      DESKTOP_APP_URL: http://webtinix.com:40013
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
       NEXT_PUBLIC_PUBLISHABLE_KEY: ${NEXT_PUBLIC_PUBLISHABLE_KEY:-your-publishable-key-here}
     networks:
       - sis-network
@@ -146,7 +146,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://webtinix.com:4003
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -161,18 +161,18 @@ services:
         NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
         NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-        DESKTOP_APP_URL: http://localhost:3001
-        NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+        DESKTOP_APP_URL: http://webtinix.com:40013
+        NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     container_name: sis-frontend-admin
     restart: unless-stopped
     ports:
-      - "3002:3000"
+      - "4003:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://webtinix.com:4003
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -187,8 +187,8 @@ services:
       NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
       NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-      DESKTOP_APP_URL: http://localhost:3001
-      NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+      DESKTOP_APP_URL: http://webtinix.com:4002
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:4002
     networks:
       - sis-network
 
@@ -199,7 +199,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3003
+        NEXTAUTH_URL: http://webtinix.com:4004
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -217,13 +217,13 @@ services:
     container_name: sis-frontend-admin-hospital
     restart: unless-stopped
     ports:
-      - "3003:3000"
+      - "4004:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3003
+      NEXTAUTH_URL: http://webtinix.com:4004
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -248,7 +248,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://webtinix.com:4005
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -263,18 +263,18 @@ services:
         NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
         NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-        DESKTOP_APP_URL: http://localhost:3001
-        NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+        DESKTOP_APP_URL: http://webtinix.com:40013
+        NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     container_name: sis-frontend-agent-accueil
     restart: unless-stopped
     ports:
-      - "3004:3000"
+      - "4005:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://webtinix.com:4005
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -289,8 +289,8 @@ services:
       NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
       NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-      DESKTOP_APP_URL: http://localhost:3001
-      NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+      DESKTOP_APP_URL: http://webtinix.com:40013
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     networks:
       - sis-network
 
@@ -301,7 +301,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_SECRET: your-secret-key-here
-        NEXTAUTH_URL: http://localhost:3000
+        NEXTAUTH_URL: http://webtinix.com:4006
         API_URL: http://backend:8000/api/v1
         KEYCLOAK_ID: symfony-app
         KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -316,18 +316,18 @@ services:
         NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
         NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-        DESKTOP_APP_URL: http://localhost:3001
-        NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+        DESKTOP_APP_URL: hhttp://webtinix.com:40013
+        NEXT_PUBLIC_DESKTOP_APP_URL: hhttp://webtinix.com:40013
     container_name: sis-frontend-urgence
     restart: unless-stopped
     ports:
-      - "3005:3000"
+      - "4006:3000"
     depends_on:
       - backend
     environment:
       NODE_ENV: development
       NEXTAUTH_SECRET: your-secret-key-here
-      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://webtinix.com:4006
       API_URL: http://backend:8000/api/v1
       KEYCLOAK_ID: symfony-app
       KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -342,8 +342,62 @@ services:
       NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
       NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
-      DESKTOP_APP_URL: http://localhost:3001
-      NEXT_PUBLIC_DESKTOP_APP_URL : http://localhost:3001
+      DESKTOP_APP_URL: http://webtinix.com:40013
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
+    networks:
+      - sis-network
+
+  # Frontend Patient-Desktop
+  # This service is for the desktop version of the patient frontend
+  frontend-patient-desktop:
+    build:
+      context: ./frontend-sis-patient-desktop
+      dockerfile: Dockerfile
+      args:
+        NEXTAUTH_SECRET: your-secret-key-here
+        NEXTAUTH_URL: http://webtinix.com:40013
+        API_URL: http://backend:8000/api/v1
+        KEYCLOAK_ID: symfony-app
+        KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+        KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+        MINIO_ENDPOINT: minio
+        MINIO_PORT: 9000
+        MINIO_USE_SSL: "false"
+        MINIO_ACCESS_KEY: minioadmin
+        MINIO_SECRET_KEY: minioadmin
+        MINIO_BUCKET: default-bucket
+        NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+        NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+        NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+        NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+        DESKTOP_APP_URL: http://webtinix.com:40013
+        NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
+    container_name: sis-frontend-patient-desktop
+    restart: unless-stopped
+    ports:
+      - "40013:3000"
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: your-secret-key-here
+      NEXTAUTH_URL: http://localhost:4001
+      API_URL: http://backend:8000/api/v1
+      KEYCLOAK_ID: symfony-app
+      KEYCLOAK_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
+      KEYCLOAK_ISSUER: http://keycloak:8080/realms/symfony-app
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: default-bucket
+      NEXT_PUBLIC_PUSHER_APP_ID: ${PUSHER_APP_ID:-1990615}
+      NEXT_PUBLIC_PUSHER_KEY: ${PUSHER_APP_KEY:-45d6d619dfbddef2cb98}
+      NEXT_PUBLIC_PUSHER_SECRET: ${PUSHER_APP_SECRET:-66154ba4647bd873e612}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
+      DESKTOP_APP_URL: http://webtinix.com:40013
+      NEXT_PUBLIC_DESKTOP_APP_URL: http://webtinix.com:40013
     networks:
       - sis-network
 
@@ -353,13 +407,37 @@ services:
     container_name: sis-database
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "4007:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: backend_sis
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ROOT_HOST: "%"
     volumes:
       - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+    networks:
+      - sis-network
+
+  # PhpMyAdmin pour la gestion de la base de données
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: sis-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "4013:80"
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 512M
+      MEMORY_LIMIT: 512M
+      MAX_EXECUTION_TIME: 300
+    depends_on:
+      - database
     networks:
       - sis-network
 
@@ -369,7 +447,7 @@ services:
     container_name: sis-keycloak
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "4008:8080"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -392,8 +470,8 @@ services:
     container_name: sis-minio
     restart: unless-stopped
     ports:
-      - "9000:9000"  # API
-      - "9001:9001"  # Console
+      - "4009:9000"  # API
+      - "4010:9001"  # Console
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
@@ -409,8 +487,8 @@ services:
     container_name: sis-mailer
     restart: unless-stopped
     ports:
-      - "1025:1025"  # SMTP
-      - "8025:8025"  # Interface web
+      - "4011:1025"  # SMTP
+      - "4012:8025"  # Interface web
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
