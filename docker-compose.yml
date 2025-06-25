@@ -18,7 +18,7 @@ services:
       APP_ENV: dev
       APP_SECRET: a660bec2b10af5b8f8c12dfb6d3e0428
       DATABASE_URL: mysql://root:password@database:3306/backend_sis?serverVersion=8.0
-      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$$'
       KEYCLOAK_ISSUER_URL: http://keycloak:8080/realms/symfony-app
       KEYCLOAK_CLIENT_ID: symfony-app
       KEYCLOAK_CLIENT_SECRET: 52c0e07c-449b-4979-8561-76770f00730a
@@ -55,6 +55,7 @@ services:
         NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
         DESKTOP_APP_URL: http://patient-desktop-sis.webtinix.com
         NEXT_PUBLIC_DESKTOP_APP_URL: http://patient-desktop-sis.webtinix.com
+        NEXT_PUBLIC_PUBLISHABLE_KEY: ${NEXT_PUBLIC_PUBLISHABLE_KEY:-your-publishable-key-here}
     container_name: sis-frontend-patient-mobile
     restart: unless-stopped
     ports:
@@ -81,6 +82,7 @@ services:
       NEXT_PUBLIC_PUSHER_CLUSTER: ${PUSHER_APP_CLUSTER:-eu}
       DESKTOP_APP_URL: http://patient-desktop-sis.webtinix.com
       NEXT_PUBLIC_DESKTOP_APP_URL: http://patient-desktop-sis.webtinix.com
+      NEXT_PUBLIC_PUBLISHABLE_KEY: ${NEXT_PUBLIC_PUBLISHABLE_KEY:-your-publishable-key-here}
     networks:
       - sis-network
 
@@ -141,6 +143,7 @@ services:
 
   # Frontend Admin
   frontend-admin:
+    image: infra_sis-frontend-admin:24.06.-10.30
     build:
       context: ./frontend-sis-admin
       dockerfile: Dockerfile
